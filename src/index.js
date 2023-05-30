@@ -45,7 +45,7 @@ let whisky2 = {
     age : 10,
     type : "Blended",
     distillery : "",
-    review : review2
+    review : null
 };
 let whiskies = [];
 whiskies.push(whisky1);
@@ -70,7 +70,7 @@ let distillery2={
     description : "The Nikka Whisky Distilling Co. Ltd. is a producer of Japanese whisky and other beverages headquartered in Tokyo. It is owned by Asahi Group Holdings." +
         "\nThe company operates a number of distilleries and other facilities in Japan, including two Japanese whisky distilleries, the Yoichi distillery in Yoichi, Hokkaidō (established in 1934), " +
         "\nand the Miyagikyo distillery in Aoba-ku, Sendai, Miyagi Prefecture, Northern Honshū (established in 1969). It also owns the Ben Nevis Distillery (acquired in 1989) in Scotland.",
-    whiskies : whisky2
+    whiskies : whiskies
 }
 let distilleries= [];
 distilleries.push(distillery1);
@@ -79,6 +79,7 @@ distilleries.push(distillery2);
 /**
  * GET requests
  */
+//returns list of whiskies
 app.get('/whiskies', function (req, res){
     if (whiskies === undefined){
         res.status(404).send("List of whiskies does not exist!");
@@ -86,16 +87,66 @@ app.get('/whiskies', function (req, res){
     res.status(200).send(whiskies);
 })
 
+// returns whisky by id
 app.get('/whiskies/:whiskyId', function (req, res){
     const id = req.params.whiskyId;
 
     if (returnWhiskyById(id) === undefined){
-        res.status(404).send("Whisky with id %{id} does not exist!");
+        res.status(404).send("Whisky with id " + id + " does not exist!");
     }
     res.status(200).send(returnWhiskyById(id));
 });
 
+//returns list of distilleries
+app.get('/distilleries', function (req, res){
+    if (distilleries === undefined){
+        res.status(404).send("List of distilleries does not exist!");
+    }
+    res.status(200).send(distilleries);
+})
 
+//returns distillery by id
+app.get('/distilleries/:distilleryId', function (req, res){
+    const id = req.params.distilleryId;
+
+    if (returnDistilleryById(id) === undefined){
+        res.status(404).send("Distillery with id " + id + " does not exist!");
+    }
+    res.status(200).send(returnDistilleryById(id));
+});
+//returns a list of whiskies of the distillery with the given id
+app.get('/distilleries/:distilleryId/whiskies', function (req, res){
+    const id = req.params.distilleryId;
+
+    if (returnWhiskiesByDistilleryId(id) === undefined){
+        res.status(404).send("Distillery with id " + id + " does not exist!");
+    }
+    res.status(200).send(returnWhiskiesByDistilleryId(id));
+});
+
+//returns the review of the whisky with the given id
+app.get('/whiskies/:whiskyId/review', function (req, res){
+    const id = req.params.whiskyId;
+    const review = returnReviewByWhiskyId(id);
+    if (returnReviewByWhiskyId(id) === undefined) {
+        res.status(404).send("Whisky with id " + id + " does not exist!");
+    }else if (review === null || review === undefined){
+        res.status(404).send("Whisky with id " + id + " does not have a review!");
+    }
+    res.status(200).send(returnReviewByWhiskyId(id));
+});
+
+//returns a list of whiskies of a certain type (single malt, blended etc.)
+// app.get('/whiskies/?type=type', function (req, res){
+//     const id = req.params.whiskyId;
+//
+//     if (returnWhiskyById(id) === undefined){
+//         res.status(404).send("Whisky with id %{id} does not exist!");
+//     }else if (review === null || review === undefined){
+//         res.status(404).send("Whisky with id %{id} does not have a review!");
+//     }
+//     res.status(200).send(returnReviewByWhiskyId(id));
+// });
 
 /**
  * POST requests
@@ -138,6 +189,31 @@ function returnWhiskyById(id){
         }
     }
 }
+
+function returnDistilleryById(id){
+    for (const distillery of distilleries){
+        if (distillery.distilleryId == id){
+            return distillery;
+        }
+    }
+}
+
+function returnWhiskiesByDistilleryId(id) {
+    for (const distillery of distilleries){
+        if (distillery.distilleryId == id){
+            return distillery.whiskies;
+        }
+    }
+}
+
+function returnReviewByWhiskyId(id) {
+    for (const whisky of whiskies){
+        if (whisky.whiskyId == id){
+            return whisky.review;
+        }
+    }
+}
+
 
 function filterWhiskyByDistilleryName(distilleryName){
     let whiskiesReturn = [];
