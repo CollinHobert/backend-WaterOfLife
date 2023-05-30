@@ -3,34 +3,9 @@ const express = require('express');
 const url = require("url");
 const app = express();
 
-// Requiring the http module
-const http = require('http');
-
 // Creating a port variable to listen on later
 const port = 3000;
 
-// Creating a server object
-/*
-const server = http.createServer(function (req, res) {
-    res.setHeader('Content-Type', 'text/plain');
-
-    if (req.method !== 'GET'){
-        res.statusCode = 405;
-        res.write("error; not allowed");
-    }else {
-        if (req.url === "/hello"){
-            res.statusCode = 200;
-            res.write('Hello World!');
-        }else {
-            res.statusCode = 404;
-            res.write("error; not found");
-        }
-        console.log("test")
-    }
-
-    res.end();
-});
- */
 
 // Some created data of review-objects stored in an array 'reviews' to have some dummy data to start with
 let review1={
@@ -47,31 +22,6 @@ let review2={
 let reviews= [];
 reviews.push(review1);
 reviews.push(review2);
-
-// Some created data of distillery-objects stored in an array 'distilleries' to have some dummy data to start with
-let distillery1={
-    distilleryId : 1,
-    name : "Talisker Distillery",
-    country : "Scotland",
-    region : "Islands - Isle of Skye",
-    description : "The Talisker Distillery produces an alluring, sweet, full-bodied single malt that is so easy to enjoy, and like Skye itself, so hard to leave. " +
-        "\nOn the shores of the Isle of Skye, where rugged coastlines meet the raging sea, you find adventure in a bottle. " +
-        "\nTalisker single malt scotch whisky captures the elemental wildness and unadulterated beauty of its birthplace to give you a taste of Skye in every sip.",
-    whiskies : whisky1
-}
-let distillery2={
-    distilleryId : 2,
-    name : "Yoichi distillery",
-    country : "Japan",
-    region : "Hokkaidō",
-    description : "The Nikka Whisky Distilling Co. Ltd. is a producer of Japanese whisky and other beverages headquartered in Tokyo. It is owned by Asahi Group Holdings." +
-        "\nThe company operates a number of distilleries and other facilities in Japan, including two Japanese whisky distilleries, the Yoichi distillery in Yoichi, Hokkaidō (established in 1934), " +
-        "\nand the Miyagikyo distillery in Aoba-ku, Sendai, Miyagi Prefecture, Northern Honshū (established in 1969). It also owns the Ben Nevis Distillery (acquired in 1989) in Scotland.",
-    whiskies : whisky2
-}
-let distilleries= [];
-distilleries.push(distillery1);
-distilleries.push(distillery2);
 
 
 // Some created data of whisky-objects stored in an array 'whiskies' to have some dummy data to start with
@@ -101,7 +51,30 @@ let whiskies = [];
 whiskies.push(whisky1);
 whiskies.push(whisky2);
 
-
+// Some created data of distillery-objects stored in an array 'distilleries' to have some dummy data to start with
+let distillery1={
+    distilleryId : 1,
+    name : "Talisker Distillery",
+    country : "Scotland",
+    region : "Islands - Isle of Skye",
+    description : "The Talisker Distillery produces an alluring, sweet, full-bodied single malt that is so easy to enjoy, and like Skye itself, so hard to leave. " +
+        "\nOn the shores of the Isle of Skye, where rugged coastlines meet the raging sea, you find adventure in a bottle. " +
+        "\nTalisker single malt scotch whisky captures the elemental wildness and unadulterated beauty of its birthplace to give you a taste of Skye in every sip.",
+    whiskies : whisky1
+}
+let distillery2={
+    distilleryId : 2,
+    name : "Yoichi distillery",
+    country : "Japan",
+    region : "Hokkaidō",
+    description : "The Nikka Whisky Distilling Co. Ltd. is a producer of Japanese whisky and other beverages headquartered in Tokyo. It is owned by Asahi Group Holdings." +
+        "\nThe company operates a number of distilleries and other facilities in Japan, including two Japanese whisky distilleries, the Yoichi distillery in Yoichi, Hokkaidō (established in 1934), " +
+        "\nand the Miyagikyo distillery in Aoba-ku, Sendai, Miyagi Prefecture, Northern Honshū (established in 1969). It also owns the Ben Nevis Distillery (acquired in 1989) in Scotland.",
+    whiskies : whisky2
+}
+let distilleries= [];
+distilleries.push(distillery1);
+distilleries.push(distillery2);
 
 /**
  * GET requests
@@ -112,23 +85,28 @@ app.get('/whiskies', function (req, res){
     }
     res.status(200).send(whiskies);
 })
-
+/*
 app().get('/whiskies/:whiskyId', function (req, res){
     const number = req.params.id;
 
     res.status(200).send(`Whisky with id ${id} here!`);
 });
 
+
+
 /**
  * POST requests
  */
+/*
 app().post('/', function (req, res){
     res.post();
 });
 
+
 /**
  * PUT requests
  */
+/*
 app().put('/', function (req, res){
     res.put();
 });
@@ -136,13 +114,15 @@ app().put('/', function (req, res){
 /**
  * DELETE requests
  */
+/*
 app().delete('/', function (req, res){
     res.delete();
 });
+*/
 
 
 // Server setup, listening on port 3000 (port variable)
-server.listen(port, function() {
+app.listen(port, function() {
     console.log(`Server listening on port ${port}!`);
 });
 
