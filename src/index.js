@@ -3,6 +3,9 @@ const express = require('express');
 const url = require("url");
 const app = express();
 
+//make body available
+app.use(express.json());
+
 // Creating a port variable to listen on later
 const port = 3000;
 
@@ -137,16 +140,41 @@ app.get('/whiskies/:whiskyId/review', function (req, res){
 });
 
 //returns a list of whiskies of a certain type (single malt, blended etc.)
-// app.get('/whiskies/?type=type', function (req, res){
-//     const id = req.params.whiskyId;
-//
-//     if (returnWhiskyById(id) === undefined){
-//         res.status(404).send("Whisky with id %{id} does not exist!");
-//     }else if (review === null || review === undefined){
-//         res.status(404).send("Whisky with id %{id} does not have a review!");
-//     }
-//     res.status(200).send(returnReviewByWhiskyId(id));
-// });
+app.get('/whiskies', function (req, res){
+    const type = req.query.type;
+
+    if (returnWhiskiesByType(type) === undefined) {
+        res.status(404).send("There are no whiskies with type: " + type);
+    }else if (type === null || type === undefined){
+        res.status(404).send("Type: " + type + " does not exist!");
+    }
+    res.status(200).send(returnWhiskiesByType(type));
+});
+
+
+
+//returns a list of distilleries from the given country
+app.get('/distilleries', function (req, res){
+    const country = req.query.country;
+    if (returnDistilleriesByCountry(country) === undefined){
+        res.status(404).send("List of distilleries does not exist!");
+    }else if (country === null || country === undefined){
+        res.status(404).send("Country: " + country + " does not exist!");
+    }
+    res.status(200).send(returnDistilleriesByCountry(country));
+})
+
+
+//returns a list of whiskies that have the given keyword in the description
+app.get('/whiskies', function (req, res){
+    const keyword = req.query.description;
+    if (returnWhiskiesByKeyword(keyword) === undefined){
+        res.status(404).send("List of distilleries does not exist!");
+    }else if (country === null || country === undefined){
+        res.status(404).send("Country: " + country + " does not exist!");
+    }
+    res.status(200).send(returnDistilleriesByCountry(country));
+})
 
 /**
  * POST requests
@@ -212,6 +240,36 @@ function returnReviewByWhiskyId(id) {
             return whisky.review;
         }
     }
+}
+
+function returnWhiskiesByType(type) {
+    let whiskiesReturnByType = [];
+    for (const whisky of whiskies) {
+        if (whisky.type === type) {
+            whiskiesReturnByType.push(whisky);
+        }
+    }
+    return whiskiesReturnByType;
+}
+
+function returnDistilleriesByCountry(country) {
+    let distilleriesByCountry = [];
+    for (const distillery of distilleries) {
+        if (distillery.country === country) {
+            distilleriesByCountry.push(distillery);
+        }
+    }
+    return distilleriesByCountry;
+}
+
+function returnWhiskiesByKeyword(keyword) {
+    let whiskiesByKeyword = [];
+    for (const whisky of whiskies) {
+        if (whisky.description.toLowerCase().includes(keyword)) {
+            whiskiesByKeyword.push(whisky);
+        }
+    }
+    return whiskiesByKeyword;
 }
 
 
