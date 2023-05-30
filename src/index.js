@@ -85,11 +85,14 @@ app.get('/whiskies', function (req, res){
     }
     res.status(200).send(whiskies);
 })
-/*
-app().get('/whiskies/:whiskyId', function (req, res){
-    const number = req.params.id;
 
-    res.status(200).send(`Whisky with id ${id} here!`);
+app.get('/whiskies/:whiskyId', function (req, res){
+    const id = req.params.whiskyId;
+
+    if (returnWhiskyById(id) === undefined){
+        res.status(404).send("Whisky with id %{id} does not exist!");
+    }
+    res.status(200).send(returnWhiskyById(id));
 });
 
 
@@ -98,7 +101,7 @@ app().get('/whiskies/:whiskyId', function (req, res){
  * POST requests
  */
 /*
-app().post('/', function (req, res){
+app.post('/', function (req, res){
     res.post();
 });
 
@@ -107,7 +110,7 @@ app().post('/', function (req, res){
  * PUT requests
  */
 /*
-app().put('/', function (req, res){
+app.put('/', function (req, res){
     res.put();
 });
 
@@ -115,7 +118,7 @@ app().put('/', function (req, res){
  * DELETE requests
  */
 /*
-app().delete('/', function (req, res){
+app.delete('/', function (req, res){
     res.delete();
 });
 */
@@ -130,7 +133,7 @@ app.listen(port, function() {
 
 function returnWhiskyById(id){
     for (const whisky of whiskies){
-        if (whisky.id == id){
+        if (whisky.whiskyId == id){
             return whisky;
         }
     }
