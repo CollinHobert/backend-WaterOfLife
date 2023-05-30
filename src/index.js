@@ -17,6 +17,7 @@ const server = http.createServer(function (req, res) {
             res.statusCode = 404;
             res.write("error; not found");
         }
+        console.log("test")
     }
 
     res.end();
