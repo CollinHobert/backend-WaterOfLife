@@ -1,0 +1,37 @@
+@startuml
+class Whisky {
+    - whiskyId : int
+    - image : image
+    - name : String
+    - description : String
+    - age : int
+    - type : String
+    - distillery : Distillery
+    - review : Review
+}
+
+class Distillery {
+    - distilleryId : int
+    - name : String
+    - country : String
+    - region : String
+    - description : String
+    - whiskies : ArrayList<Whisky>
+
+}
+
+
+class Review {
+    - reviewId : int
+    - rating : int
+    - comment : String
+}
+
+
+Distillery "1 " *-- "1..* " Whisky : has >
+Whisky "1 " -- "1 " Review : has >
+
+@enduml
+'
+'Whisky "1  " *-up- "1 " Distillery
+'Review "1  " *-down- "1" Whisky

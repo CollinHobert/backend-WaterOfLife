@@ -1,25 +1,29 @@
-// Requiring the module and initializing express
+// Requiring the modules
 // Import external modules
-import express from 'express';
-import cors from 'cors';
+import express from "express";
+import cors from "cors";
 import statusCodes from 'http-status-codes';
 
 
 // Import internal modules
-import whiskyRouter from "../src/routers/whisky-router.js"
+import whiskyRouter from "../src/routers/whisky-router.js";
+import distilleryRouter from "../src/routers/distillery-router.js";
+import reviewRouter from "../src/routers/review-router.js";
 
+//initializing express
 const app = express();
 
 // Creating a port variable to listen on later
 const port = 3000;
 
-// Body can use json:
+// Body can use json
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
 
+// Use routers
 app.use("/whiskies", whiskyRouter);
-
+app.use("/distilleries", distilleryRouter);
+app.use("/review", reviewRouter);
 
 //
 // /**
