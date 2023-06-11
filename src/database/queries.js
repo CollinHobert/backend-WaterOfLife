@@ -38,8 +38,10 @@ export const dropReviews = `DROP TABLE IF EXISTS review;`
 
 // INSERTS
 export const insertWhiskyQuery = `INSERT INTO whisky (image, name, description, age, type, distilleryId, reviewId) VALUES (?,?,?,?,?,?,?);`;
-export const insertDistilleryQuery = `INSERT INTO distillery (name, country, region, description) VALUES (?,?,?);`;
+export const insertDistilleryQuery = `INSERT INTO distillery (name, country, region, description) VALUES (?,?,?,?);`;
 export const insertReviewQuery = `INSERT INTO review (rating, comment) VALUES (?,?);`;
+export const updateWhiskyReviewIdQuery = `UPDATE whisky SET reviewId = ? WHERE whiskyId = ?;`;
+
 
 // SELECTS
 export const getAllWhiskiesQuery = `SELECT * FROM whisky;`;

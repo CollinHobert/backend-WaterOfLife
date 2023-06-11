@@ -46,35 +46,99 @@ import * as queries from '../database/queries.js';
 // let whiskies = [];
 // whiskies.push(whisky1);
 // whiskies.push(whisky2);
+//
+const distilleries = [
+    {
+        name: "Talisker Distillery",
+        country: "Scotland",
+        region: "Islands - Isle of Skye",
+        description: "The Talisker Distillery produces an alluring, sweet, full-bodied single malt that is so easy to enjoy...",
+        whiskies: [
+            {
+                image: "../../assets/whiskies/talisker-skye.jpg",
+                name: "Talisker Skye",
+                description: "Talisker Skye biedt een rond, zoet smaakprofiel met verse citrus, zoete rook...",
+                age: 10,
+                type: "Single Malt",
+                review: {
+                    rating: 9,
+                    comment: "I really like this whisky!"
+                }
+            }
+        ]
+    },
+    {
+        name: "Yoichi distillery",
+        country: "Japan",
+        region: "Hokkaidō",
+        description: "The Nikka Whisky Distilling Co. Ltd. is a producer of Japanese whisky...",
+        whiskies: [
+            {
+                image: "../../assets/whiskies/NikkaFromTheBarrel.jpg",
+                name: "Nikka from the Barrel",
+                description: "Deze Japanse malt whisky wordt gemaakt door gerijpte malt whisky en graanwhisky te mengen...",
+                age: 10,
+                type: "Blended",
+                review: {
+                    rating: 8,
+                    comment: "This one tastes great!"
+                }
+            }
+        ]
+    }
+];
+/**
+let distilleries = [];
 
-// Some dummy start data
-let distillery1={
-    distilleryId : 1,
-    name : "Talisker Distillery",
-    country : "Scotland",
-    region : "Islands - Isle of Skye",
-    description : "The Talisker Distillery produces an alluring, sweet, full-bodied single malt that is so easy to enjoy, and like Skye itself, so hard to leave. " +
+let reviews = [
+    {
+        reviewId: 1,
+        rating: 9,
+        comment: "I really like this whisky!",
+    },
+    {
+        reviewId : 2,
+        rating : 8,
+        comment : "This one tastes great!"
+    }
+    // Add more reviews as needed
+];
+
+let whiskies = [
+    {
+        distilleryId: 1,
+        reviewId: 1,
+        image: "../../assets/whiskies/talisker-skye.jpg",
+        name: "Talisker Skye",
+        description: "Talisker Skye biedt een rond, zoet smaakprofiel met verse citrus, zoete rook, scherpe kruiden en traditionele ziltige Talisker tonen. \nToegankelijker, maar onmiskenbaar Talisker.",
+        age: 10,
+        type: "Single Malt",
+    },
+    {
+        distilleryId: 2,
+        reviewId: 2,
+        image : "../../assets/whiskies/NikkaFromTheBarrel.jpg",
+        name : "Nikka from the Barrel",
+        description : "Deze Japanse malt whisky wordt gemaakt door gerijpte malt whisky en graanwhisky te mengen en opnieuw in vaten te leggen. " +
+            "\nZo ontstaat er een rijke harmonie van verschillende whisky's. De combinatie van mokka, chocolade en vanille zorgt voor een volle en stevige smaak.",
+        age : 10,
+        type : "Blended",
+    }
+    // Add more whiskies as needed
+];
+
+distilleries.push({
+    distilleryId: 1,
+    name: "Talisker Distillery",
+    country: "Scotland",
+    region: "Islands - Isle of Skye",
+    description:
+        "The Talisker Distillery produces an alluring, sweet, full-bodied single malt that is so easy to enjoy, and like Skye itself, so hard to leave. " +
         "\nOn the shores of the Isle of Skye, where rugged coastlines meet the raging sea, you find adventure in a bottle. " +
         "\nTalisker single malt scotch whisky captures the elemental wildness and unadulterated beauty of its birthplace to give you a taste of Skye in every sip.",
-    whiskies :[
-        {
-            image : "../../assets/whiskies/talisker-skye.jpg",
-            name : "Talisker Skye",
-            description : "Talisker Skye biedt een rond, zoet smaakprofiel met verse citrus, zoete rook, scherpe kruiden en traditionele ziltige Talisker tonen. " +
-                "\nToegankelijker, maar onmiskenbaar Talisker.",
-            age : 10,
-            type : "Single Malt",
-            reviewId : [
-                {
-                    rating : 9,
-                    comment : "I really like this whisky!"
-                }
-            ]
-        }
-    ]
-}
-
-let distillery2={
+    whiskies: [whiskies[0]], // Link whisky by reference
+});
+distilleries.push({
     distilleryId : 2,
     name : "Yoichi distillery",
     country : "Japan",
@@ -82,52 +146,11 @@ let distillery2={
     description : "The Nikka Whisky Distilling Co. Ltd. is a producer of Japanese whisky and other beverages headquartered in Tokyo. It is owned by Asahi Group Holdings." +
         "\nThe company operates a number of distilleries and other facilities in Japan, including two Japanese whisky distilleries, the Yoichi distillery in Yoichi, Hokkaidō (established in 1934), " +
         "\nand the Miyagikyo distillery in Aoba-ku, Sendai, Miyagi Prefecture, Northern Honshū (established in 1969). It also owns the Ben Nevis Distillery (acquired in 1989) in Scotland.",
-    whiskies : [
-        {
-            image : "../../assets/whiskies/NikkaFromTheBarrel.jpg",
-            name : "Nikka from the Barrel",
-            description : "Deze Japanse malt whisky wordt gemaakt door gerijpte malt whisky en graanwhisky te mengen en opnieuw in vaten te leggen. " +
-                "\nZo ontstaat er een rijke harmonie van verschillende whisky's. De combinatie van mokka, chocolade en vanille zorgt voor een volle en stevige smaak.",
-            age : 10,
-            type : "Blended",
-            reviewId : [
-                {
-                    rating : 8,
-                    comment : "This one tastes great!"
-                }
-            ]
-        }
-    ]
-}
-let distilleries= [];
-distilleries.push(distillery1);
-distilleries.push(distillery2);
-
-
-
-// Create a new DB file
-let db;
-// try{
-//     db = new Database("DB/data.sqlite");
-//
-//     // Create tables
-//     db.prepare(createWhiskyTable).run();
-//
-//     const countResult = db.prepare(countWhiskiesQuery).run();
-//     console.log(countResult);
-//     if (countResult['count(whiskyId)'] === 0){
-//         const insert = prepare(insertWhiskyQuery);
-//         for (const whisky of whiskies){
-//             insert.run(whisky.image, whisky.name, whisky.description, whisky.age, whisky.type, whisky.distilleryId, whisky.reviewId);
-//         }
-//     }
-// }catch (e){
-//     console.error("Error while initializing db! " + e);
-//     throw e;
-// }
+})
+**/
 
 // INIT
-
+let db;
 try {
     db = new Database('db/data.sqlite');
 
@@ -142,7 +165,7 @@ try {
 
     // Check if the database is empty
     const countResult = db.prepare(queries.countWhiskiesQuery).get();
-    if (countResult['count(id)'] === 0) {
+    if (countResult['count(whiskyId)'] === 0) {
         // Seed the DB with some initial data!
         insertDistillery();
     }
@@ -150,32 +173,97 @@ try {
     console.error('Error while initializing db!', e);
     throw e;
 }
-
+/**
 // HELPER FUNCTION for ADDING DUMMY DATA
 function insertDistillery() {
-    const insert = db.prepare(queries.insertDistilleryQuery);
+    const insertDistillery = db.prepare(queries.insertDistilleryQuery);
+    const insertWhisky = db.prepare(queries.insertWhiskyQuery);
+    const insertReview = db.prepare(queries.insertReviewQuery);
 
     for (const distillery of distilleries) {
-        const { lastInsertRowid } = insert.run(distillery.name, distillery.country, distillery.region, distillery.description);
+        const { lastInsertRowid: distilleryId } = insertDistillery.run(
+            distillery.name,
+            distillery.country,
+            distillery.region,
+            distillery.description
+
+        );
+        console.log(distillery.name);
+        console.log(distillery.country);
+        console.log(distillery.region);
+        console.log(distillery.description);
 
         if (distillery.whiskies && distillery.whiskies.length > 0) {
-            const whiskyInsert = db.prepare(queries.insertWhiskyQuery);
             for (const whisky of distillery.whiskies) {
-                const { lastInsertRowid2 } = whiskyInsert.run(lastInsertRowid, whisky.image, whisky.name, whisky.description, whisky.age, whisky.type, whisky.distilleryId, whisky.reviewId);
+                console.log("image:" + whisky.image);
+                console.log("name:" +  whisky.name);
+                console.log("desc:" + whisky.description);
+                console.log("age:" + whisky.age);
+                console.log("type:" + whisky.type);
+                console.log("distilleryId:" + whisky.distilleryId);
+                console.log("reviewId:" + whisky.reviewId);
+                const { lastInsertRowid: whiskyId } = insertWhisky.run(
+                    whisky.image,
+                    whisky.name,
+                    whisky.description,
+                    whisky.age,
+                    whisky.type,
+                    distilleryId,
+                    whisky.reviewId
+                );
 
-                if (whisky.reviewId != null || whisky.reviewId !== "") {
-                    const reviewInsert = db.prepare(queries.insertReviewQuery);
-                    for (const review of whisky.reviewId) {
-                        reviewInsert.run(lastInsertRowid2, review.rating, review.comment);
+                if (whisky.reviewId) {
+                    const review = reviews.find((review) => review.reviewId === whisky.reviewId);
+                    console.log("reviewid: " + review.reviewId);
+                    console.log("reviewid: " + review.rating);
+                    console.log("reviewid: " + review.comment);
+                    console.log("whiskyId: " + whiskyId);
+                    if (review) {
+                        insertReview.run(whiskyId, review.rating, review.comment);
                     }
                 }
             }
-
         }
     }
 }
+**/
+function insertDistillery() {
+    const insertDistillery = db.prepare(queries.insertDistilleryQuery);
+    const insertWhisky = db.prepare(queries.insertWhiskyQuery);
+    const insertReview = db.prepare(queries.insertReviewQuery);
 
+    for (const distillery of distilleries) {
+        const { lastInsertRowid: distilleryId } = insertDistillery.run(
+            distillery.name,
+            distillery.country,
+            distillery.region,
+            distillery.description
+        );
 
+        if (distillery.whiskies && distillery.whiskies.length > 0) {
+            for (const whisky of distillery.whiskies) {
+                const { lastInsertRowid: whiskyId } = insertWhisky.run(
+                    whisky.image,
+                    whisky.name,
+                    whisky.description,
+                    whisky.age,
+                    whisky.type,
+                    distilleryId,
+                    null
+                );
+
+                if (whisky.review) {
+                    const { lastInsertRowid: reviewId } = insertReview.run(
+                        whisky.review.rating,
+                        whisky.review.comment
+                    );
+
+                    db.prepare(queries.updateWhiskyReviewIdQuery).run(reviewId, whiskyId);
+                }
+            }
+        }
+    }
+}
 
 // FUNCTIONS
 export function getAllWhiskies() {
