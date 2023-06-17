@@ -195,15 +195,7 @@ function returnReviewByWhiskyId(id) {
     }
 }
 
-function returnWhiskiesByType(type) {
-    let whiskiesReturnByType = [];
-    for (const whisky of whiskies) {
-        if (whisky.type === type) {
-            whiskiesReturnByType.push(whisky);
-        }
-    }
-    return whiskiesReturnByType;
-}
+
 
 function returnDistilleriesByCountry(country) {
     let distilleriesByCountry = [];
@@ -215,23 +207,6 @@ function returnDistilleriesByCountry(country) {
     return distilleriesByCountry;
 }
 
-function returnWhiskiesByKeyword(keyword) {
-    let whiskiesByKeyword = [];
-    for (const whisky of whiskies) {
-        if (whisky.description.toLowerCase().includes(keyword)) {
-            whiskiesByKeyword.push(whisky);
-        }
-    }
-    return whiskiesByKeyword;
-}
 
 
-function filterWhiskyByDistilleryName(distilleryName){
-    let whiskiesReturn = [];
-    for (const whisky of whiskies){
-        if (whisky.distillery.includes(distilleryName)){
-            whiskiesReturn.push(whisky);
-        }
-    }
-    return whiskiesReturn;
-}
+

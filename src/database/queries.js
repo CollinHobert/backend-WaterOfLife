@@ -42,15 +42,15 @@ export const insertDistilleryQuery = `INSERT INTO distillery (name, country, reg
 export const insertReviewQuery = `INSERT INTO review (rating, comment) VALUES (?,?);`;
 export const updateWhiskyReviewIdQuery = `UPDATE whisky SET reviewId = ? WHERE whiskyId = ?;`;
 
-
 // SELECTS
 export const getAllWhiskiesQuery = `SELECT * FROM whisky;`;
-export const getWhiskyById = `SELECT * FROM whisky WHERE id = ?;`;
+export const getWhiskyById = `SELECT * FROM whisky WHERE whiskyId = ?;`;
 export const getWhiskiesByTypeQuery = `SELECT * FROM whisky WHERE type LIKE `;
 export const getWhiskiesForDistillery = `SELECT * FROM whisky WHERE distilleryId = ?;`;
 export const getWhiskyByNameQuery = `SELECT * FROM whisky WHERE name = ?;`;
-
 export const countWhiskiesQuery = `SELECT count(whiskyId) FROM whisky;`;
+
+export const getAllDistilleriesQuery = `SELECT * FROM distillery;`;
 
 // DELETES OBJECTS
 export const deleteWhiskyById = `DELETE FROM whisky WHERE id = ?;`;

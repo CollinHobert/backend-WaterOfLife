@@ -1,5 +1,8 @@
 import express from "express";
+
+// Internal import
 import * as reviewController from "../controllers/review-controller.js";
+
 
 const router = express.Router();
 
@@ -9,7 +12,7 @@ router.get('/', reviewController.getAllReviews);
 router.get('/:id', reviewController.getReviewById);
 
 // POST calls
-//router.post('/', reviewController.postReview);
+router.post('/', reviewController.postReview);
 
 // PUT calls
 //router.put('/:id', reviewController.updateReviewById);

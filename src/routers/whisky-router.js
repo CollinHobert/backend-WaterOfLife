@@ -9,11 +9,12 @@ import * as whiskyController from "../controllers/whisky-controller.js";
 
 //calls
 // Handling of the GET request /whisky
-router.get('', whiskyController.getAllWhiskies);
+router.get('/', whiskyController.getAllWhiskies);
 router.get('/:whiskyId', whiskyController.getWhiskyById);
 
+
 // POST calls
-//router.post('/', whiskyController.postWhisky);
+router.post('/', whiskyController.postWhisky);
 
 // PUT calls
 //router.put('/:id', whiskyController.updateWhiskyById);
