@@ -6,13 +6,13 @@ const router = express.Router();
 // ALL CALLS HERE
 // GET calls
 router.get('/', distilleryController.getAllDistilleries);
-//router.get('/:id', distilleryController.getDistilleryById);
+router.get('/:distilleryId', distilleryController.getDistilleryById);
 
 // POST calls
 router.post('/', distilleryController.postDistillery);
 
 // PUT calls
-//router.put('/:id', distilleryController.updateDistilleryById);
+router.put('/:distilleryId', distilleryController.updateDistilleryById);
 
 // DELETE calls
 //router.delete('/:id', distilleryController.deleteDistilleryById);

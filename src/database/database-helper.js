@@ -121,7 +121,6 @@ export function getAllWhiskies() {
 export function getWhiskyById(id) {
     return db.prepare(queries.getWhiskyById).get(id);
 }
-
 export function getWhiskiesByType(){
     return db.prepare(queries.getWhiskiesByTypeQuery + `'%${name}%'`).all();
 }
@@ -137,6 +136,9 @@ export function deleteWhiskyById(id) {
 export function getAllDistilleries() {
     return db.prepare(queries.getAllDistilleriesQuery).all();
 }
+export function getDistilleryById(id) {
+    return db.prepare(queries.getDistilleryById).get(id);
+}
 export function getDistilleryByName(name) {
     return db.prepare(queries.getWhiskyByNameQuery + `'%${name}%'`).all();
 }
@@ -151,4 +153,9 @@ export function postWhisky(whisky) {
 export function postReview(review) {
     const preparedQuery = db.prepare(queries.insertReviewQuery);
     preparedQuery.run(review.rating, review.comment);
+}
+
+export function putDistilleryById(id, distillery){
+    const preparedQuery = db.prepare(queries.putDistilleryById);
+    preparedQuery.run(distillery.name, distillery.country, distillery.region, distillery.description, id);
 }

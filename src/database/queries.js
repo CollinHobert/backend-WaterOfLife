@@ -51,6 +51,10 @@ export const getWhiskyByNameQuery = `SELECT * FROM whisky WHERE name = ?;`;
 export const countWhiskiesQuery = `SELECT count(whiskyId) FROM whisky;`;
 
 export const getAllDistilleriesQuery = `SELECT * FROM distillery;`;
+export const getDistilleryById = `SELECT * FROM distillery WHERE distilleryId = ?;`;
+
+// UPDATE OBJECTS
+export const putDistilleryById = `UPDATE distillery SET name = ?, country = ?, region = ?, description = ? WHERE distilleryId = ?;`;
 
 // DELETES OBJECTS
 export const deleteWhiskyById = `DELETE FROM whisky WHERE id = ?;`;
