@@ -3,7 +3,7 @@ import Database from "better-sqlite3";
 import * as queries from '../database/queries.js';
 
 /** Used as dummy data for inserting into database **/
-/**
+
 const distilleries = [
     {
         name: "Talisker Distillery",
@@ -44,13 +44,12 @@ const distilleries = [
         ]
     }
 ];
-**/
+
 
 // Initializing database, used only once to add the tables and the dummy data.
-/**
-let db;
+/*
+let db= new Database('db/data.sqlite');
 try {
-    db = new Database('db/data.sqlite');
 
     db.prepare(queries.dropWhiskies).run();
     db.prepare(queries.dropDistilleries).run();
@@ -109,7 +108,8 @@ function insertDistillery() {
         }
     }
 }
-**/
+
+*/
 
 //Initialize database
 let db= new Database('db/data.sqlite');
@@ -142,14 +142,28 @@ export function getDistilleryById(id) {
 export function getDistilleryByName(name) {
     return db.prepare(queries.getWhiskyByNameQuery + `'%${name}%'`).all();
 }
+export function getReviewById(id) {
+    return db.prepare(queries.getReviewById).get(id);
+}
+
 export function postDistillery(distillery) {
     const preparedQuery = db.prepare(queries.insertDistilleryQuery);
     preparedQuery.run(distillery.name, distillery.country, distillery.region, distillery.description);
 }
+
 export function postWhisky(whisky) {
+    // Prepare the insert query for a whisky
     const preparedQuery = db.prepare(queries.insertWhiskyQuery);
-    preparedQuery.run(whisky.image, whisky.name, whisky.description, whisky.age, whisky.type, whisky.distilleryId, whisky.reviewId);
+
+    // get the reviewId of the review that belongs to this whisky, the review that is posted right before this whisky.
+    const result = db.prepare(queries.getLatestReviewId).get();
+
+    // parse the result to an int, so that it can be inserted with the whisky as the reviewId
+    const reviewId = parseInt(result.reviewId);
+
+    preparedQuery.run(whisky.image, whisky.name, whisky.description, whisky.age, whisky.type, whisky.distilleryId, reviewId);
 }
+
 export function postReview(review) {
     const preparedQuery = db.prepare(queries.insertReviewQuery);
     preparedQuery.run(review.rating, review.comment);
@@ -158,4 +172,14 @@ export function postReview(review) {
 export function putDistilleryById(id, distillery){
     const preparedQuery = db.prepare(queries.putDistilleryById);
     preparedQuery.run(distillery.name, distillery.country, distillery.region, distillery.description, id);
+}
+
+export function putWhiskyById(id, whisky){
+    const preparedQuery = db.prepare(queries.putWhiskyById);
+    preparedQuery.run(whisky.image, whisky.name, whisky.description, whisky.age, whisky.type, whisky.distilleryId, id);
+}
+
+export function putReviewById(id, review){
+    const preparedQuery = db.prepare(queries.putReviewById);
+    preparedQuery.run(review.rating, review.comment, id);
 }

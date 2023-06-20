@@ -27,50 +27,49 @@ export function deleteDistilleryById(req,res) {
     return res.status(statusCodes.NO_CONTENT).json();
 }
 
-//TODO: POST AND PUT cats
-export function postDistillery(req, res) {
-    console.log("POST")
-    // Get the distillery data from the request body
-    const newDistillery = req.body;
+// add new distillery to database, checks if the given data is valid
+export async function postDistillery(req, res) {
+    try {
+        console.log("POST DISTILLERY");
+        // Get the distillery data from the request body
+        const newDistillery = req.body;
 
-    // Validate the required distillery data
-    if (!newDistillery.name || !newDistillery.country || !newDistillery.region || !newDistillery.description) {
-        return res.status(400).json({ error: 'Missing required data for distillery' });
-    }
-
-    // Execute the insert query with the distillery data
-    db.postDistillery(newDistillery, (error) => {
-        if (error) {
-            console.error('Error inserting distillery:', error);
-            return res.status(500).json({ error: 'Failed to create distillery' });
+        // Validate the required distillery data
+        if (!newDistillery.name || !newDistillery.country || !newDistillery.region || !newDistillery.description) {
+            return res.status(400).json({ error: 'Missing required data for distillery' });
         }
+
+        // Execute the insert query with the distillery data
+        await db.postDistillery(newDistillery);
 
         // Return a success response with the new distillery object
         return res.status(201).json(newDistillery);
-    });
+    } catch (error) {
+        console.error('Error inserting distillery:', error);
+        return res.status(500).json({ error: 'Failed to create distillery' });
+    }
 }
 
-export function updateDistilleryById(req, res){
-    const id = req.params.distilleryId;
-    const distillery = req.body;// Assuming the updated distillery data is sent in the request body
-    console.log("PUT");
+export async function updateDistilleryById(req, res) {
+    try {
+        const id = req.params.distilleryId;
+        const distillery = req.body; // Assuming the updated distillery data is sent in the request body
+        console.log("PUT DISTILLERY");
 
-    // Validate the required distillery data
-    if (isNaN(id) || !distillery.name || !distillery.country || !distillery.region || !distillery.description) {
-        return res.status(400).json({ error: 'Missing required data for distillery' });
-    }
-
-    // Execute the insert query with the distillery data
-    db.putDistilleryById(id, distillery, (error) => {
-        if (error) {
-            console.error('Error updating distillery:', error);
-            console.log("debug error");
-            return res.status(500).json({error: 'Internal server error'});
-
+        // Validate the required distillery data
+        if (isNaN(id) || !distillery.name || !distillery.country || !distillery.region || !distillery.description) {
+            return res.status(400).json({ error: 'Missing required data for distillery' });
         }
+
+        // Execute the update query with the distillery data
+        await db.putDistilleryById(id, distillery);
+
         // Return a success response
-        res.status(200).json({message: 'Distillery updated successfully'});
-    });
+        res.status(200).json({ message: 'Distillery updated successfully' });
+    } catch (error) {
+        console.error('Error updating distillery:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
 }
 
 //HELPER FUNCTIONS

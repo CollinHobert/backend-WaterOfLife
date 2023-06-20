@@ -12,12 +12,11 @@ import * as whiskyController from "../controllers/whisky-controller.js";
 router.get('/', whiskyController.getAllWhiskies);
 router.get('/:whiskyId', whiskyController.getWhiskyById);
 
-
 // POST calls
 router.post('/', whiskyController.postWhisky);
 
 // PUT calls
-//router.put('/:id', whiskyController.updateWhiskyById);
+router.put('/:whiskyId', whiskyController.updateWhiskyById);
 
 // DELETE calls
 //router.delete('/:id', whiskyController.deleteWhiskyById);

@@ -23,7 +23,7 @@ app.use(express.json());
 // Use routers
 app.use("/whiskies", whiskyRouter);
 app.use("/distilleries", distilleryRouter);
-app.use("/review", reviewRouter);
+app.use("/reviews", reviewRouter);
 
 //
 // /**

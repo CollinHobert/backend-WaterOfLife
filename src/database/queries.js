@@ -53,8 +53,16 @@ export const countWhiskiesQuery = `SELECT count(whiskyId) FROM whisky;`;
 export const getAllDistilleriesQuery = `SELECT * FROM distillery;`;
 export const getDistilleryById = `SELECT * FROM distillery WHERE distilleryId = ?;`;
 
+export const getReviewById = `SELECT * FROM review WHERE reviewId = ?;`;
+
 // UPDATE OBJECTS
 export const putDistilleryById = `UPDATE distillery SET name = ?, country = ?, region = ?, description = ? WHERE distilleryId = ?;`;
+export const putWhiskyById = `UPDATE whisky SET image = ?, name = ?, description = ?, age = ?, type = ?, distilleryId = ? WHERE whiskyId = ?;`;
+export const putReviewById = `UPDATE review SET rating = ?, comment = ? WHERE reviewId = ?;`;
+
 
 // DELETES OBJECTS
 export const deleteWhiskyById = `DELETE FROM whisky WHERE id = ?;`;
+
+// HELPER QUERIES
+export const getLatestReviewId =  `SELECT reviewId FROM review ORDER BY reviewId DESC LIMIT 1;`;
