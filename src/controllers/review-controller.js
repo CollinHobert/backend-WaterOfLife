@@ -23,9 +23,9 @@ export function getReviewById(req,res) {
 // add new review to database, checks if the given data is valid
 export async function postReview(req, res) {
     try {
-        const newReview = req.body;
-        const whisky = req.body;
         console.log("POST REVIEW");
+        const newReview = req.body;
+        //const whisky = req.body;
 
         // Validate the required review data
         if (isNaN(newReview.rating) || !newReview.rating || !newReview.comment) {
@@ -33,9 +33,9 @@ export async function postReview(req, res) {
         }
 
         // Validate the required whisky data
-        if (isNaN(whisky.age) || !whisky.age || !whisky.name || !whisky.type || !whisky.image || !whisky.description) {
-            return res.status(400).json({error: 'Missing required data for whisky'});
-        }
+        // if (isNaN(whisky.age) || !whisky.age || !whisky.name || !whisky.type || !whisky.image || !whisky.description) {
+        //     return res.status(400).json({error: 'Missing required data for whisky'});
+        // }
 
         // Execute the insert query with the review data
         await db.postReview(newReview);
@@ -76,7 +76,8 @@ export async function updateReviewById(req, res) {
 // Deletes review by id. Checks if the review exists, if not an error will be thrown.
 export function deleteReviewById(req,res) {
     try {
-        const id = req.params.id;
+        console.log("DELETE REVIEW");
+        const id = req.params.reviewId;
         db.deleteReviewById(id);
         return res.status(statusCodes.NO_CONTENT).json();
     } catch (error) {

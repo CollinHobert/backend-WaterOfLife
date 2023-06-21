@@ -5,28 +5,26 @@ import statusCodes from "http-status-codes";
 import * as db from "../database/database-helper.js";
 
 /* EXPORT FUNCTIONS */
-export function getAllWhiskies(req, res){
-    // console.log(res.query.name);
-    // console.log(req.name);
-    // let name = req.query.name;
-    // if (name === undefined){name = ''}
-    // res.status(statusCodes.OK).json(db.getWhiskiesByName(name));
 
-    // if (returnWhiskiesByType(type) === undefined) {
-    //     res.status(404).send("There are no whiskies with type: " + type);
-    // }else if (type === null || type === undefined){
-    //     res.status(404).send("Type: " + type + " does not exist!");
-    // }
+// Get all whiskies or if there is a type defined (Single Malt, Blended or Bourbon), get whiskies by type.
+export async function getAllWhiskies(req, res) {
+    try {
+        let whiskies;
+        let type = req.query.type;
 
-    //console.log(returnWhiskiesByType(type))
-    res.status(statusCodes.OK).json(db.getAllWhiskies());
-    //res.status(200).send(whiskies);
-}
-
-export function getWhiskiesByType(req, res){
-    let type = req.query.name;
-    if (type === undefined){type = ''}
-    res.status(statusCodes.OK).json(db.getWhiskiesByType(type));
+        if (type === undefined || type === 'Show All') {
+            console.log("ALL WHISKIES");
+            whiskies = await db.getAllWhiskies();
+            res.status(statusCodes.OK).json(whiskies);
+        } else {
+            console.log("WHISKIES BY TYPE");
+            whiskies = await db.getWhiskiesByType(type);
+            res.status(statusCodes.OK).json(whiskies);
+        }
+    } catch (error) {
+        console.error("Error fetching whiskies:", error);
+        res.status(500).send("Error fetching whiskies");
+    }
 }
 
 export function getWhiskyById(req, res) {
@@ -84,6 +82,7 @@ export async function updateWhiskyById(req, res) {
 // Deletes whisky by id. Checks if the whisky exists, if not an error will be thrown.
 export function deleteWhiskyById(req,res) {
     try {
+        console.log("DELETE WHISKY");
         const id = req.params.whiskyId;
         db.deleteWhiskyById(id);
         return res.status(statusCodes.NO_CONTENT).json();

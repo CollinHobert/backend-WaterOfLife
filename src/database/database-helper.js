@@ -123,9 +123,10 @@ export function getAllWhiskies() {
 export function getWhiskyById(id) {
     return db.prepare(queries.getWhiskyById).get(id);
 }
-export function getWhiskiesByType(){
-    return db.prepare(queries.getWhiskiesByTypeQuery + `'%${name}%'`).all();
+export function getWhiskiesByType(type) {
+    return db.prepare(queries.getWhiskiesByTypeQuery + `'${type}%'`).all();
 }
+
 export function getWhiskyByName(name) {
     return db.prepare(queries.getWhiskyByNameQuery + `'%${name}%'`).all();
 }

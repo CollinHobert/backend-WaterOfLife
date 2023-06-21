@@ -28,6 +28,7 @@ export function getDistilleryById(req,res) {
 // Deletes distillery by id. Checks if the distillery exists, if not an error will be thrown.
 export function deleteDistilleryById(req,res) {
     try {
+        console.log("DELETE DISTILLERY");
         const id = req.params.distilleryId;
         db.deleteDistilleryById(id);
         return res.status(statusCodes.NO_CONTENT).json();
