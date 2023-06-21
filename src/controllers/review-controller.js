@@ -20,12 +20,6 @@ export function getReviewById(req,res) {
     return res.status(statusCodes.OK).json(review);
 }
 
-export function deleteReviewById(req,res) {
-    const review = findReviewById(req.params.id);
-    db.deleteReviewById(review.id);
-    return res.status(statusCodes.NO_CONTENT).json();
-}
-
 // add new review to database, checks if the given data is valid
 export async function postReview(req, res) {
     try {
@@ -79,6 +73,18 @@ export async function updateReviewById(req, res) {
     }
 }
 
+// Deletes review by id. Checks if the review exists, if not an error will be thrown.
+export function deleteReviewById(req,res) {
+    try {
+        const id = req.params.id;
+        db.deleteReviewById(id);
+        return res.status(statusCodes.NO_CONTENT).json();
+    } catch (error) {
+        // Error handling
+        console.error('Error deleting review: ', error);
+        return res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Failed to delete review.' });
+    }
+}
 
 //HELPER METHODS
 function findReviewById(reviewId) {

@@ -18,7 +18,7 @@ router.post('/', reviewController.postReview);
 router.put('/:id', reviewController.updateReviewById);
 
 // DELETE calls
-//router.delete('/:id', reviewController.deleteReviewById);
+router.delete('/:reviewId', reviewController.deleteReviewById);
 
 // Finally
 export default router;

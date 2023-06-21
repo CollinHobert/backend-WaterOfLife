@@ -15,7 +15,7 @@ router.post('/', distilleryController.postDistillery);
 router.put('/:distilleryId', distilleryController.updateDistilleryById);
 
 // DELETE calls
-//router.delete('/:id', distilleryController.deleteDistilleryById);
+router.delete('/:distilleryId', distilleryController.deleteDistilleryById);
 
 // Finally
 export default router;

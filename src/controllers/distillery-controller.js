@@ -15,16 +15,27 @@ export function getAllDistilleries(req,res) {
     res.status(statusCodes.OK).json(db.getAllDistilleries());
 }
 
+// Gets distillery by id. Checks if the distillery exists, if not an error will be thrown.
 export function getDistilleryById(req,res) {
     const id = req.params.distilleryId;
     const distillery = findDistilleryById(id);
+    if (!distillery) {
+        return res.status(statusCodes.NOT_FOUND).json({ error: 'Distillery not found' });
+    }
     return res.status(statusCodes.OK).json(distillery);
 }
 
+// Deletes distillery by id. Checks if the distillery exists, if not an error will be thrown.
 export function deleteDistilleryById(req,res) {
-    const distillery = findDistilleryById(req.params.id);
-    db.deleteDistilleryById(distillery.id);
-    return res.status(statusCodes.NO_CONTENT).json();
+    try {
+        const id = req.params.distilleryId;
+        db.deleteDistilleryById(id);
+        return res.status(statusCodes.NO_CONTENT).json();
+    } catch (error) {
+        // Error handling
+        console.error('Error deleting distillery:', error);
+        return res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Failed to delete distillery.' });
+    }
 }
 
 // add new distillery to database, checks if the given data is valid

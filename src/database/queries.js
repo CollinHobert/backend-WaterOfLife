@@ -62,7 +62,9 @@ export const putReviewById = `UPDATE review SET rating = ?, comment = ? WHERE re
 
 
 // DELETES OBJECTS
-export const deleteWhiskyById = `DELETE FROM whisky WHERE id = ?;`;
+export const deleteWhiskyById = `DELETE FROM whisky WHERE whiskyId = ?;`;
+export const deleteDistilleryById = `DELETE FROM distillery WHERE distilleryId = ?;`;
+export const deleteReviewById = `DELETE FROM review WHERE reviewId = ?;`;
 
 // HELPER QUERIES
 export const getLatestReviewId =  `SELECT reviewId FROM review ORDER BY reviewId DESC LIMIT 1;`;

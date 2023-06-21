@@ -3,7 +3,7 @@ import Database from "better-sqlite3";
 import * as queries from '../database/queries.js';
 
 /** Used as dummy data for inserting into database **/
-
+/*
 const distilleries = [
     {
         name: "Talisker Distillery",
@@ -47,7 +47,7 @@ const distilleries = [
 
 
 // Initializing database, used only once to add the tables and the dummy data.
-/*
+
 let db= new Database('db/data.sqlite');
 try {
 
@@ -114,7 +114,9 @@ function insertDistillery() {
 //Initialize database
 let db= new Database('db/data.sqlite');
 
-// FUNCTIONS
+/** FUNCTIONS **/
+
+// GETS
 export function getAllWhiskies() {
     return db.prepare(queries.getAllWhiskiesQuery).all();
 }
@@ -130,9 +132,6 @@ export function getWhiskyByName(name) {
 export function getWhiskiesForDistillery(distilleryId) {
     return db.prepare(queries.getWhiskiesForDistillery).all(distilleryId);
 }
-export function deleteWhiskyById(id) {
-    return db.prepare(queries.deleteWhiskyById).run(id);
-}
 export function getAllDistilleries() {
     return db.prepare(queries.getAllDistilleriesQuery).all();
 }
@@ -146,11 +145,11 @@ export function getReviewById(id) {
     return db.prepare(queries.getReviewById).get(id);
 }
 
+// POSTS
 export function postDistillery(distillery) {
     const preparedQuery = db.prepare(queries.insertDistilleryQuery);
     preparedQuery.run(distillery.name, distillery.country, distillery.region, distillery.description);
 }
-
 export function postWhisky(whisky) {
     // Prepare the insert query for a whisky
     const preparedQuery = db.prepare(queries.insertWhiskyQuery);
@@ -163,23 +162,35 @@ export function postWhisky(whisky) {
 
     preparedQuery.run(whisky.image, whisky.name, whisky.description, whisky.age, whisky.type, whisky.distilleryId, reviewId);
 }
-
 export function postReview(review) {
     const preparedQuery = db.prepare(queries.insertReviewQuery);
     preparedQuery.run(review.rating, review.comment);
 }
 
+// PUTS
 export function putDistilleryById(id, distillery){
     const preparedQuery = db.prepare(queries.putDistilleryById);
     preparedQuery.run(distillery.name, distillery.country, distillery.region, distillery.description, id);
 }
-
 export function putWhiskyById(id, whisky){
     const preparedQuery = db.prepare(queries.putWhiskyById);
     preparedQuery.run(whisky.image, whisky.name, whisky.description, whisky.age, whisky.type, whisky.distilleryId, id);
 }
-
 export function putReviewById(id, review){
     const preparedQuery = db.prepare(queries.putReviewById);
     preparedQuery.run(review.rating, review.comment, id);
+}
+
+// DELETES
+export function deleteDistilleryById(id){
+    const preparedQuery = db.prepare(queries.deleteDistilleryById);
+    preparedQuery.run(id);
+}
+export function deleteWhiskyById(id){
+    const preparedQuery = db.prepare(queries.deleteWhiskyById);
+    preparedQuery.run(id);
+}
+export function deleteReviewById(id){
+    const preparedQuery = db.prepare(queries.deleteReviewById);
+    preparedQuery.run(id);
 }

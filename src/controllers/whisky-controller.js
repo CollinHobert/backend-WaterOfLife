@@ -81,6 +81,19 @@ export async function updateWhiskyById(req, res) {
     }
 }
 
+// Deletes whisky by id. Checks if the whisky exists, if not an error will be thrown.
+export function deleteWhiskyById(req,res) {
+    try {
+        const id = req.params.whiskyId;
+        db.deleteWhiskyById(id);
+        return res.status(statusCodes.NO_CONTENT).json();
+    } catch (error) {
+        // Error handling
+        console.error('Error deleting whisky:', error);
+        return res.status(statusCodes.INTERNAL_SERVER_ERROR).json({ error: 'Failed to delete whisky.' });
+    }
+}
+
 //HELPER FUNCTIONS
 function findWhiskyById(whiskyId) {
     const id = Number(whiskyId);

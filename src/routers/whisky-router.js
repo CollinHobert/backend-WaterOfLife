@@ -19,7 +19,7 @@ router.post('/', whiskyController.postWhisky);
 router.put('/:whiskyId', whiskyController.updateWhiskyById);
 
 // DELETE calls
-//router.delete('/:id', whiskyController.deleteWhiskyById);
+router.delete('/:whiskyId', whiskyController.deleteWhiskyById);
 
 //finally
 export default router;
