@@ -5,14 +5,24 @@ import statusCodes from "http-status-codes";
 import * as db from "../database/database-helper.js";
 
 /* EXPORT FUNCTIONS */
-export function getAllDistilleries(req,res) {
-    // let name = req.query.name;
-    // if (name == undefined) { name = '' };
-    // const distilleries = db.getDistilleryByName(name);
-    // for (let whisky of whiskies) {
-    //     whisky.distilleryId = db.getWhiskiesForDistillery(whisky.id);
-    // }
-    res.status(statusCodes.OK).json(db.getAllDistilleries());
+
+// Get all distilleries or when country is defined, filter by country
+export async function getAllDistilleries(req,res) {
+    try {
+        let distilleries;
+        let country = req.query.country;
+
+        if (country === undefined || country === 'Show All') {
+            distilleries = await db.getAllDistilleries();
+            res.status(statusCodes.OK).json(distilleries);
+        } else {
+            distilleries = await db.getDistilleriesByType(country);
+            res.status(statusCodes.OK).json(distilleries);
+        }
+    } catch (error) {
+        console.error("Error fetching distilleries:", error);
+        res.status(500).send("Error fetching distilleries");
+    }
 }
 
 // Gets distillery by id. Checks if the distillery exists, if not an error will be thrown.
@@ -28,7 +38,6 @@ export function getDistilleryById(req,res) {
 // Deletes distillery by id. Checks if the distillery exists, if not an error will be thrown.
 export function deleteDistilleryById(req,res) {
     try {
-        console.log("DELETE DISTILLERY");
         const id = req.params.distilleryId;
         db.deleteDistilleryById(id);
         return res.status(statusCodes.NO_CONTENT).json();
@@ -42,14 +51,13 @@ export function deleteDistilleryById(req,res) {
 // add new distillery to database, checks if the given data is valid
 export async function postDistillery(req, res) {
     try {
-        console.log("POST DISTILLERY");
         // Get the distillery data from the request body
         const newDistillery = req.body;
 
         // Validate the required distillery data
-        if (!newDistillery.name || !newDistillery.country || !newDistillery.region || !newDistillery.description) {
-            return res.status(400).json({ error: 'Missing required data for distillery' });
-        }
+        // if (!newDistillery.name || !newDistillery.country || !newDistillery.region || !newDistillery.description) {
+        //     return res.status(400).json({ error: 'Missing required data for distillery' });
+        // }
 
         // Execute the insert query with the distillery data
         await db.postDistillery(newDistillery);
@@ -66,12 +74,11 @@ export async function updateDistilleryById(req, res) {
     try {
         const id = req.params.distilleryId;
         const distillery = req.body; // Assuming the updated distillery data is sent in the request body
-        console.log("PUT DISTILLERY");
 
         // Validate the required distillery data
-        if (isNaN(id) || !distillery.name || !distillery.country || !distillery.region || !distillery.description) {
-            return res.status(400).json({ error: 'Missing required data for distillery' });
-        }
+        // if (isNaN(id) || !distillery.name || !distillery.country || !distillery.region || !distillery.description) {
+        //     return res.status(400).json({ error: 'Missing required data for distillery' });
+        // }
 
         // Execute the update query with the distillery data
         await db.putDistilleryById(id, distillery);
@@ -85,6 +92,7 @@ export async function updateDistilleryById(req, res) {
 }
 
 //HELPER FUNCTIONS
+// Searches for distillery by id, throws error when id is not a number or not found
 function findDistilleryById(distilleryId) {
     const id = Number(distilleryId);
     if (isNaN(id)) {

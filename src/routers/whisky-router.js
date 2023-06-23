@@ -1,6 +1,5 @@
 // Import modules
 import express from 'express';
-import statusCodes from "http-status-codes";
 
 const router = express.Router();
 

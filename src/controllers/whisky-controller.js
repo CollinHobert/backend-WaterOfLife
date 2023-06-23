@@ -5,44 +5,59 @@ import statusCodes from "http-status-codes";
 import * as db from "../database/database-helper.js";
 
 /* EXPORT FUNCTIONS */
-
 // Get all whiskies or if there is a type defined (Single Malt, Blended or Bourbon), get whiskies by type.
 export async function getAllWhiskies(req, res) {
     try {
         let whiskies;
         let type = req.query.type;
+        let rating = req.query.rating;
+        console.log(type);
+        console.log(rating);
 
-        if (type === undefined || type === 'Show All') {
-            console.log("ALL WHISKIES");
+        // Check if there is a type or rating selected or not.
+        // When there is no type án no rating selected or 'Show All' is selected, show all whiskies
+        if ((type === undefined || type === 'undefined' || type === 'Show All') && (rating === undefined || rating === 'undefined' || rating === 'Show All')) {
             whiskies = await db.getAllWhiskies();
             res.status(statusCodes.OK).json(whiskies);
-        } else {
-            console.log("WHISKIES BY TYPE");
+
+        // When there is a rating selected and type is 'Show All' or type is undefined, show whiskies only by rating.
+        }else if ((rating !== undefined || rating !== 'undefined') && (type === undefined || type === "undefined" || type === 'Show All')) {
+            whiskies = await db.getWhiskiesByRating(rating);
+            res.status(statusCodes.OK).json(whiskies);
+
+        // When there is a type selected and rating is 'Show All' or rating is undefined, show whiskies only by type.
+        } else if ((type !== undefined || type !== 'undefined') && (rating === undefined || rating === 'undefined' || rating === 'Show All')) {
             whiskies = await db.getWhiskiesByType(type);
             res.status(statusCodes.OK).json(whiskies);
+
+        // When there is a type and rating selected, show whiskies by rating and by type.
+        } else if ((rating !== undefined || rating !== 'undefined') && (type !== undefined || type !== 'undefined')) {
+            whiskies = await db.getWhiskiesByRatingAndType(rating, type);
+            res.status(statusCodes.OK).json(whiskies);
         }
+
     } catch (error) {
         console.error("Error fetching whiskies:", error);
         res.status(500).send("Error fetching whiskies");
     }
 }
 
+// Get whisky by id, uses findWhiskyById helper function
 export function getWhiskyById(req, res) {
     const id = req.params.whiskyId;
     const whisky = findWhiskyById(id);
     res.status(statusCodes.OK).send(whisky);
 }
 
-// add new whisky to database, checks if the given data is valid
+// Add new whisky to database, checks if the given data is valid
 export async function postWhisky(req, res) {
     try {
-        console.log("POST WHISKY");
         const whisky = req.body;
 
-        // Validate the required whisky data
-        if (isNaN(whisky.age) || !whisky.age || !whisky.name || !whisky.type || !whisky.image || !whisky.description) {
-            return res.status(400).json({ error: 'Missing required data for whisky' });
-        }
+        // // Validate the required whisky data
+        // if (isNaN(whisky.age) || !whisky.age || !whisky.name || !whisky.type || !whisky.image || !whisky.description) {
+        //     return res.status(400).json({ error: 'Missing required data for whisky' });
+        // }
 
         await db.postWhisky(whisky);
 
@@ -54,19 +69,17 @@ export async function postWhisky(req, res) {
     }
 }
 
-
 // Update whisky with new data, checks if the given data is valid
 export async function updateWhiskyById(req, res) {
     try {
         const id = req.params.whiskyId;
         const whisky = req.body; // Assuming the updated whisky data is sent in the request body
-        console.log("PUT WHISKY");
         console.log("id: " + id);
 
         // Validate the required whisky data
-        if (isNaN(id) || !whisky.age || !whisky.name || !whisky.type || !whisky.image || !whisky.description) {
-            return res.status(400).json({ error: 'Missing required data for whisky' });
-        }
+        // if (isNaN(id) || !whisky.age || !whisky.name || !whisky.type || !whisky.image || !whisky.description) {
+        //     return res.status(400).json({ error: 'Missing required data for whisky' });
+        // }
 
         // Execute the update query with the whisky data
         await db.putWhiskyById(id, whisky);
@@ -82,7 +95,6 @@ export async function updateWhiskyById(req, res) {
 // Deletes whisky by id. Checks if the whisky exists, if not an error will be thrown.
 export function deleteWhiskyById(req,res) {
     try {
-        console.log("DELETE WHISKY");
         const id = req.params.whiskyId;
         db.deleteWhiskyById(id);
         return res.status(statusCodes.NO_CONTENT).json();
@@ -94,6 +106,8 @@ export function deleteWhiskyById(req,res) {
 }
 
 //HELPER FUNCTIONS
+
+// Searches for whisky by id, throws error when id is not a number or not found
 function findWhiskyById(whiskyId) {
     const id = Number(whiskyId);
     if (isNaN(id)) {
@@ -105,37 +119,4 @@ function findWhiskyById(whiskyId) {
     }
     return whisky;
 }
-function returnWhiskyById(id){
-    for (const whisky of whiskies){
-        if (whisky.whiskyId == id){
-            return whisky;
-        }
-    }
-}
-function returnWhiskiesByType(type) {
-    let whiskiesReturnByType = [];
-    for (const whisky of whiskies) {
-        if (whisky.type === type) {
-            whiskiesReturnByType.push(whisky);
-        }
-    }
-    return whiskiesReturnByType;
-}
-function returnWhiskiesByKeyword(keyword) {
-    let whiskiesByKeyword = [];
-    for (const whisky of whiskies) {
-        if (whisky.description.toLowerCase().includes(keyword)) {
-            whiskiesByKeyword.push(whisky);
-        }
-    }
-    return whiskiesByKeyword;
-}
-function filterWhiskyByDistilleryName(distilleryName){
-    let whiskiesReturn = [];
-    for (const whisky of whiskies){
-        if (whisky.distillery.includes(distilleryName)){
-            whiskiesReturn.push(whisky);
-        }
-    }
-    return whiskiesReturn;
-}
+

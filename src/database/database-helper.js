@@ -3,7 +3,6 @@ import Database from "better-sqlite3";
 import * as queries from '../database/queries.js';
 
 /** Used as dummy data for inserting into database **/
-/*
 const distilleries = [
     {
         name: "Talisker Distillery",
@@ -47,13 +46,12 @@ const distilleries = [
 
 
 // Initializing database, used only once to add the tables and the dummy data.
-
 let db= new Database('db/data.sqlite');
 try {
-
-    db.prepare(queries.dropWhiskies).run();
-    db.prepare(queries.dropDistilleries).run();
-    db.prepare(queries.dropReviews).run();
+    // turned of so that the tables dont get cleared every time when you run
+    // db.prepare(queries.dropWhiskies).run();
+    // db.prepare(queries.dropDistilleries).run();
+    // db.prepare(queries.dropReviews).run();
 
     // Create the table (if it doesn't exist yet)
     db.prepare(queries.createWhiskyQuery).run();
@@ -71,6 +69,7 @@ try {
     throw e;
 }
 
+// Function used to insert the dummy data into the database
 function insertDistillery() {
     const insertDistillery = db.prepare(queries.insertDistilleryQuery);
     const insertWhisky = db.prepare(queries.insertWhiskyQuery);
@@ -109,14 +108,11 @@ function insertDistillery() {
     }
 }
 
-*/
-
-//Initialize database
-let db= new Database('db/data.sqlite');
-
 /** FUNCTIONS **/
 
 // GETS
+
+// Gets for whisky
 export function getAllWhiskies() {
     return db.prepare(queries.getAllWhiskiesQuery).all();
 }
@@ -126,22 +122,25 @@ export function getWhiskyById(id) {
 export function getWhiskiesByType(type) {
     return db.prepare(queries.getWhiskiesByTypeQuery + `'${type}%'`).all();
 }
+export function getWhiskiesByRating(rating){
+    return db.prepare(queries.getWhiskyByReviewRatingQuery).all(rating);
+}
+export function getWhiskiesByRatingAndType(rating, type){
+    return db.prepare(queries.getWhiskyByRatingAndTypeQuery).all(rating, type);
+}
 
-export function getWhiskyByName(name) {
-    return db.prepare(queries.getWhiskyByNameQuery + `'%${name}%'`).all();
-}
-export function getWhiskiesForDistillery(distilleryId) {
-    return db.prepare(queries.getWhiskiesForDistillery).all(distilleryId);
-}
+// Gets for distillery
 export function getAllDistilleries() {
     return db.prepare(queries.getAllDistilleriesQuery).all();
+}
+export function getDistilleriesByType(type) {
+    return db.prepare(queries.getDistilleriesByTypeQuery + `'${type}%'`).all();
 }
 export function getDistilleryById(id) {
     return db.prepare(queries.getDistilleryById).get(id);
 }
-export function getDistilleryByName(name) {
-    return db.prepare(queries.getWhiskyByNameQuery + `'%${name}%'`).all();
-}
+
+// Gets for review
 export function getReviewById(id) {
     return db.prepare(queries.getReviewById).get(id);
 }
