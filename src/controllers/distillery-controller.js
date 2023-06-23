@@ -54,11 +54,6 @@ export async function postDistillery(req, res) {
         // Get the distillery data from the request body
         const newDistillery = req.body;
 
-        // Validate the required distillery data
-        // if (!newDistillery.name || !newDistillery.country || !newDistillery.region || !newDistillery.description) {
-        //     return res.status(400).json({ error: 'Missing required data for distillery' });
-        // }
-
         // Execute the insert query with the distillery data
         await db.postDistillery(newDistillery);
 
@@ -73,12 +68,7 @@ export async function postDistillery(req, res) {
 export async function updateDistilleryById(req, res) {
     try {
         const id = req.params.distilleryId;
-        const distillery = req.body; // Assuming the updated distillery data is sent in the request body
-
-        // Validate the required distillery data
-        // if (isNaN(id) || !distillery.name || !distillery.country || !distillery.region || !distillery.description) {
-        //     return res.status(400).json({ error: 'Missing required data for distillery' });
-        // }
+        const distillery = req.body; // the updated distillery data is sent in the request body
 
         // Execute the update query with the distillery data
         await db.putDistilleryById(id, distillery);

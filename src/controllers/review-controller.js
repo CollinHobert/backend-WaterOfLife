@@ -36,12 +36,7 @@ export async function postReview(req, res) {
 export async function updateReviewById(req, res) {
     try {
         const id = req.params.id;
-        const review = req.body; // Assuming the updated review data is sent in the request body
-
-        // Validate the required review data
-        if (isNaN(review.rating) || !review.rating || !review.comment) {
-            return res.status(400).json({ error: 'Missing required data for review' });
-        }
+        const review = req.body; // the updated review data is sent in the request body
 
         // Update the review in the database
         await db.putReviewById(id, review);

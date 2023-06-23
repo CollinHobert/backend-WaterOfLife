@@ -54,11 +54,6 @@ export async function postWhisky(req, res) {
     try {
         const whisky = req.body;
 
-        // // Validate the required whisky data
-        // if (isNaN(whisky.age) || !whisky.age || !whisky.name || !whisky.type || !whisky.image || !whisky.description) {
-        //     return res.status(400).json({ error: 'Missing required data for whisky' });
-        // }
-
         await db.postWhisky(whisky);
 
         // Return a success response with the new whisky object
@@ -73,13 +68,7 @@ export async function postWhisky(req, res) {
 export async function updateWhiskyById(req, res) {
     try {
         const id = req.params.whiskyId;
-        const whisky = req.body; // Assuming the updated whisky data is sent in the request body
-        console.log("id: " + id);
-
-        // Validate the required whisky data
-        // if (isNaN(id) || !whisky.age || !whisky.name || !whisky.type || !whisky.image || !whisky.description) {
-        //     return res.status(400).json({ error: 'Missing required data for whisky' });
-        // }
+        const whisky = req.body; // the updated whisky data is sent in the request body
 
         // Execute the update query with the whisky data
         await db.putWhiskyById(id, whisky);
